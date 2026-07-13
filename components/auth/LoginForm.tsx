@@ -22,7 +22,7 @@ export default function LoginForm() {
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     if (params.get("error") === "confirmation_failed") {
-      setError("EMAIL CONFIRMATION FAILED — REQUEST A NEW LINK OR LOG IN");
+      setError("Email confirmation failed — request a new link or log in.");
     }
   }, []);
 
@@ -47,21 +47,21 @@ export default function LoginForm() {
     <form onSubmit={handleSubmit} className="flex flex-col gap-4">
       {!configured && (
         <p className="notice-block">
-          SUPABASE NOT CONFIGURED — SET NEXT_PUBLIC_SUPABASE_URL AND
-          NEXT_PUBLIC_SUPABASE_ANON_KEY IN .ENV.LOCAL, THEN RESTART. LOGIN IS
-          DISABLED.
+          Supabase not configured — set NEXT_PUBLIC_SUPABASE_URL and
+          NEXT_PUBLIC_SUPABASE_ANON_KEY in .env.local, then restart. Login is
+          disabled.
         </p>
       )}
 
       {error && <p className="error-block" role="alert">{error}</p>}
 
-      <Field label="EMAIL" htmlFor="login-email">
+      <Field label="Email" htmlFor="login-email">
         <Input
           id="login-email"
           name="email"
           type="email"
           autoComplete="email"
-          placeholder="YOU@EXAMPLE.COM"
+          placeholder="you@example.com"
           required
           disabled={disabled}
           value={email}
@@ -69,13 +69,13 @@ export default function LoginForm() {
         />
       </Field>
 
-      <Field label="PASSWORD" htmlFor="login-password">
+      <Field label="Password" htmlFor="login-password">
         <Input
           id="login-password"
           name="password"
           type="password"
           autoComplete="current-password"
-          placeholder="********"
+          placeholder="••••••••"
           required
           disabled={disabled}
           value={password}
@@ -89,7 +89,7 @@ export default function LoginForm() {
         className="w-full"
         disabled={disabled}
       >
-        {loading ? "WORKING…" : "LOG IN ->"}
+        {loading ? "Signing in…" : "Sign in"}
       </Button>
     </form>
   );

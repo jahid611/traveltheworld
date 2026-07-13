@@ -1,45 +1,46 @@
 @import "tailwindcss";
 
 /* ===========================================================================
-   TRAVELTHEWORLD — "NIGHT ATLAS" DESIGN SYSTEM
-   Warm, atmospheric, editorial. Deep sea-night background, parchment ink,
-   sunset accents, gold cartography lines. Soft corners, gentle glow.
+   TRAVELTHEWORLD — GOOGLE-EARTH STYLE DESIGN SYSTEM
+   Clean, light chrome floating over a photoreal globe in black space.
+   Google palette (blue #1a73e8, greys), Roboto, pill buttons, soft elevation.
 =========================================================================== */
 
 @theme {
-  /* Surfaces — deep sea at night */
-  --color-ink: #0a1723; /* base background */
-  --color-ink-deep: #050d15; /* gradient edges / darkest */
-  --color-panel: #102636; /* lifted glass surface */
-  --color-raise: #1a3547; /* hover surface */
-  --color-line: #274253; /* hairline border */
-  --color-line-strong: #3a5f74; /* stronger border */
-  --color-mute: #93aab8; /* secondary text (dusty blue) */
-  --color-fg: #f6ecdb; /* primary text (warm parchment) */
+  /* Space / dark surfaces (globe backdrop, readout chips) */
+  --color-ink: #0b0e14;
+  --color-ink-deep: #05070d;
 
-  /* Accents — sunset & sea */
-  --color-sun: #f2a25c; /* primary accent (amber sunset) */
-  --color-sun-deep: #e07338; /* deep sunset for gradients */
-  --color-gold: #e6c375; /* cartography lines, fine detail */
-  --color-sea: #4bb3ac; /* teal secondary accent */
-  --color-coral: #e8705f; /* destructive / errors */
+  /* Light chrome surfaces */
+  --color-panel: #ffffff; /* cards / panels */
+  --color-raise: #f1f3f4; /* grey-100 hover */
+  --color-line: #dadce0; /* grey-300 border */
+  --color-line-strong: #bdc1c6; /* grey-400 */
+  --color-mute: #5f6368; /* grey-700 secondary text */
+  --color-fg: #202124; /* grey-900 primary text */
 
-  --font-display:
-    var(--font-display), ui-serif, Georgia, Cambria, "Times New Roman", serif;
+  /* Accents (token names kept for compatibility; remapped to Google hues) */
+  --color-sun: #1a73e8; /* Google blue (primary) */
+  --color-sun-deep: #1765cc; /* blue hover/pressed */
+  --color-sea: #1e8e3e; /* Google green (success/notice) */
+  --color-coral: #d93025; /* Google red (error/destructive) */
+  --color-gold: #f9ab00; /* Google yellow (accent) */
+
   --font-sans:
-    var(--font-sans), ui-sans-serif, system-ui, -apple-system, "Segoe UI",
-    Roboto, sans-serif;
+    var(--font-sans), "Roboto", system-ui, -apple-system, "Segoe UI", Arial,
+    sans-serif;
+  --font-display: var(--font-sans), "Roboto", system-ui, sans-serif;
   --font-mono:
-    var(--font-mono), ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+    var(--font-mono), "Roboto Mono", ui-monospace, "SFMono-Regular", Menlo,
+    monospace;
 
-  /* Real, gentle radii (travel theme — no longer brutalist) */
-  --radius-xs: 3px;
-  --radius-sm: 5px;
+  --radius-xs: 4px;
+  --radius-sm: 6px;
   --radius-md: 8px;
   --radius-lg: 12px;
   --radius-xl: 16px;
-  --radius-2xl: 22px;
-  --radius-3xl: 30px;
+  --radius-2xl: 24px;
+  --radius-3xl: 9999px;
 }
 
 html,
@@ -47,16 +48,9 @@ body {
   height: 100%;
 }
 
-/* Sea-night gradient wash behind everything. */
+/* Light background for chrome/auth pages (the globe view sets its own dark bg). */
 .app-bg {
-  background-color: var(--color-ink);
-  background-image:
-    radial-gradient(
-      120% 90% at 50% -10%,
-      #163247 0%,
-      var(--color-ink) 45%,
-      var(--color-ink-deep) 100%
-    );
+  background-color: #ffffff;
 }
 
 body {
@@ -67,64 +61,62 @@ body {
 }
 
 ::selection {
-  background: var(--color-sun);
-  color: #2a1405;
+  background: #c6dafc;
+  color: #062e6f;
 }
 
-/* Slim, warm scrollbars. */
+/* Google-style slim scrollbars. */
 * {
   scrollbar-width: thin;
-  scrollbar-color: var(--color-line-strong) transparent;
+  scrollbar-color: #bdc1c6 transparent;
 }
 *::-webkit-scrollbar {
-  width: 9px;
-  height: 9px;
+  width: 12px;
+  height: 12px;
 }
 *::-webkit-scrollbar-track {
   background: transparent;
 }
 *::-webkit-scrollbar-thumb {
-  background: var(--color-line-strong);
+  background: #bdc1c6;
   border-radius: 9999px;
-  border: 2px solid transparent;
+  border: 3px solid transparent;
   background-clip: padding-box;
+}
+*::-webkit-scrollbar-thumb:hover {
+  background: #9aa0a6;
 }
 
 @layer components {
-  /* Display heading helper — serif, tight. */
   .display {
     font-family: var(--font-display);
-    font-weight: 600;
+    font-weight: 500;
     letter-spacing: -0.01em;
-    line-height: 0.98;
+    line-height: 1.05;
   }
 
-  /* Uppercase micro-label — gold-tinted, wide tracking. */
+  /* Caption / micro-label — Google grey, sentence-friendly. */
   .label {
     display: block;
-    font-size: 10px;
-    font-weight: 600;
-    letter-spacing: 0.22em;
-    text-transform: uppercase;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.02em;
     color: var(--color-mute);
   }
 
-  /* Sunset accent block — inline highlight for hero words / brand. */
+  /* Kept for the rare solid-blue brand tag. */
   .accent-sun {
-    background-image: linear-gradient(
-      120deg,
-      var(--color-sun) 0%,
-      var(--color-sun-deep) 100%
-    );
-    color: #2a1405;
+    background: var(--color-sun);
+    color: #ffffff;
   }
 
+  /* Google outlined text field. */
   .input {
     width: 100%;
     border: 1px solid var(--color-line);
     border-radius: var(--radius-md);
-    background: rgba(6, 16, 24, 0.6);
-    padding: 0.6rem 0.85rem;
+    background: #ffffff;
+    padding: 0.65rem 0.85rem;
     font-size: 0.9rem;
     color: var(--color-fg);
     outline: none;
@@ -134,121 +126,147 @@ body {
   }
   .input::placeholder {
     color: var(--color-mute);
-    opacity: 0.7;
   }
   .input:focus {
     border-color: var(--color-sun);
-    box-shadow: 0 0 0 3px rgba(242, 162, 92, 0.16);
+    box-shadow: 0 0 0 1px var(--color-sun);
   }
 
-  /* Base button — quiet glass with warm border. */
+  /* Secondary button — Google "outlined", pill. */
   .btn {
     display: inline-flex;
     align-items: center;
     justify-content: center;
     gap: 0.5rem;
-    border: 1px solid var(--color-line-strong);
-    border-radius: var(--radius-md);
-    background: rgba(26, 53, 71, 0.5);
-    padding: 0.6rem 1.1rem;
-    font-size: 0.72rem;
-    font-weight: 700;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--color-fg);
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-3xl);
+    background: #ffffff;
+    padding: 0.55rem 1.1rem;
+    font-size: 0.82rem;
+    font-weight: 500;
+    letter-spacing: 0.01em;
+    color: var(--color-sun);
     cursor: pointer;
     user-select: none;
     transition:
       background 0.15s ease,
       border-color 0.15s ease,
-      transform 0.1s ease,
       box-shadow 0.15s ease;
   }
   .btn:hover:not(:disabled) {
-    background: var(--color-raise);
-    border-color: var(--color-sun);
-  }
-  .btn:active:not(:disabled) {
-    transform: translateY(1px);
+    background: #f6faff;
+    border-color: #d2e3fc;
+    box-shadow: 0 1px 2px rgba(60, 64, 67, 0.15);
   }
   .btn:disabled {
     cursor: not-allowed;
-    opacity: 0.45;
+    color: var(--color-mute);
+    opacity: 0.6;
   }
 
-  /* Primary CTA — sunset gradient with soft glow. */
+  /* Primary button — Google blue filled, pill. */
   .btn-invert {
     border-color: transparent;
-    background-image: linear-gradient(
-      120deg,
-      var(--color-sun) 0%,
-      var(--color-sun-deep) 100%
-    );
-    color: #2a1405;
-    box-shadow: 0 6px 20px -8px rgba(224, 115, 56, 0.7);
+    background: var(--color-sun);
+    color: #ffffff;
+    box-shadow: 0 1px 2px rgba(60, 64, 67, 0.25);
   }
   .btn-invert:hover:not(:disabled) {
-    background-image: linear-gradient(120deg, #ffb571 0%, #ef8047 100%);
+    background: var(--color-sun-deep);
     border-color: transparent;
-    box-shadow: 0 10px 26px -8px rgba(224, 115, 56, 0.85);
+    box-shadow: 0 1px 3px rgba(60, 64, 67, 0.4);
+  }
+  .btn-invert:disabled {
+    background: #e8eaed;
+    color: #9aa0a6;
   }
 
-  /* Ghost — nearly invisible until hovered. */
+  /* Text button — no chrome until hover. */
   .btn-ghost {
-    border-color: var(--color-line);
+    border-color: transparent;
     background: transparent;
-    color: var(--color-mute);
+    color: var(--color-sun);
   }
   .btn-ghost:hover:not(:disabled) {
-    background: rgba(26, 53, 71, 0.4);
-    border-color: var(--color-line-strong);
-    color: var(--color-fg);
+    background: rgba(26, 115, 232, 0.08);
+    border-color: transparent;
   }
 
-  /* Frosted panel — the postcard/boarding-pass surface. */
+  /* White elevated card. */
   .panel {
     border: 1px solid var(--color-line);
     border-radius: var(--radius-lg);
-    background:
-      linear-gradient(
-        180deg,
-        rgba(255, 255, 255, 0.03) 0%,
-        rgba(255, 255, 255, 0) 40%
-      ),
-      rgba(16, 38, 54, 0.82);
-    backdrop-filter: blur(14px) saturate(120%);
-    -webkit-backdrop-filter: blur(14px) saturate(120%);
-    box-shadow: 0 24px 60px -24px rgba(0, 0, 0, 0.7);
+    background: var(--color-panel);
+    box-shadow:
+      0 1px 3px rgba(60, 64, 67, 0.15),
+      0 4px 12px rgba(60, 64, 67, 0.1);
   }
 
-  /* Soft lift for floating dialogs. */
+  /* Dialog elevation. */
   .lift {
     box-shadow:
-      0 30px 80px -30px rgba(0, 0, 0, 0.85),
-      0 0 0 1px rgba(230, 195, 117, 0.08);
+      0 11px 15px -7px rgba(60, 64, 67, 0.2),
+      0 24px 38px 3px rgba(60, 64, 67, 0.14),
+      0 9px 46px 8px rgba(60, 64, 67, 0.12);
   }
 
-  /* Errors — coral wash. */
-  .error-block {
-    border: 1px solid rgba(232, 112, 95, 0.55);
-    border-radius: var(--radius-md);
-    background: rgba(232, 112, 95, 0.12);
-    color: #ffd9d0;
-    padding: 0.55rem 0.8rem;
-    font-size: 0.72rem;
-    font-weight: 600;
+  /* Circular Google-Earth control button. */
+  .g-control {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 40px;
+    width: 40px;
+    border: none;
+    border-radius: 9999px;
+    background: #ffffff;
+    color: var(--color-mute);
+    font-size: 18px;
+    font-weight: 500;
+    cursor: pointer;
+    box-shadow: 0 1px 3px rgba(60, 64, 67, 0.35);
+    transition: background 0.15s ease;
+  }
+  .g-control:hover {
+    background: #f1f3f4;
+    color: var(--color-fg);
+  }
+
+  /* Bottom readout chip on the dark globe. */
+  .g-readout {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    border-radius: var(--radius-sm);
+    background: rgba(0, 0, 0, 0.55);
+    padding: 0.3rem 0.7rem;
+    font-family: var(--font-mono);
+    font-size: 11px;
     letter-spacing: 0.02em;
+    color: rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(4px);
+  }
+
+  /* Error — Google red. */
+  .error-block {
+    border: 1px solid #f4c7c3;
+    border-radius: var(--radius-md);
+    background: #fce8e6;
+    color: #c5221f;
+    padding: 0.55rem 0.8rem;
+    font-size: 0.78rem;
+    font-weight: 500;
     word-break: break-word;
   }
 
-  /* Notices — sea/gold wash. */
+  /* Notice — Google blue info. */
   .notice-block {
-    border: 1px solid rgba(75, 179, 172, 0.4);
+    border: 1px solid #d2e3fc;
     border-radius: var(--radius-md);
-    background: rgba(75, 179, 172, 0.1);
-    color: #cdeeea;
+    background: #e8f0fe;
+    color: #1967d2;
     padding: 0.55rem 0.8rem;
-    font-size: 0.72rem;
-    letter-spacing: 0.02em;
+    font-size: 0.78rem;
+    letter-spacing: 0.01em;
   }
 }

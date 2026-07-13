@@ -1,8 +1,8 @@
 # TRAVELTHEWORLD
 
-A lightweight, travel-themed 3D globe web application. Pin your places on an
-interactive night-atlas globe and attach client-side-optimized images and short
-videos to every pin. Warm sunset accents, gold cartography, your data only.
+A lightweight, Google-Earth-style 3D globe web application. Pin your places on
+a photoreal interactive globe and attach client-side-optimized images and short
+videos to every pin. Clean Google-Material chrome, your data only.
 
 Built with **Next.js 15 (App Router, TypeScript)**, **React Three Fiber +
 three.js**, **Tailwind CSS 4**, **Zustand**, and **Supabase** (Auth, Postgres
@@ -29,9 +29,18 @@ for the build checklist.
   lightweight MediaRecorder re-encode fallback for oversized files.
 - **Own your data** — RLS on every table, private storage bucket with
   owner-folder policies, signed URLs for reads.
-- **Travel "night atlas" UI** — deep sea-night background, glowing atmosphere
-  halo and starfield, gold coastlines, sunset-amber accents, frosted-glass
-  postcard panels, and editorial serif (Fraunces) display type.
+- **Google-Earth-style UI** — photoreal satellite Earth (day / specular /
+  normal maps) with a fresnel atmosphere halo and starfield, plus clean Google
+  Material chrome: white search pill, circular zoom controls, a live
+  coordinate + camera-altitude readout, and white card panels (Roboto,
+  `#1a73e8` blue).
+
+### Earth textures
+
+`public/textures/earth_day.jpg`, `earth_specular.jpg`, and `earth_normal.jpg`
+come from the [three.js](https://github.com/mrdoob/three.js) example texture
+set (NASA Blue Marble / Visible Earth derivatives, public domain). Regenerate
+or swap them for higher-resolution maps at your discretion.
 
 ## Getting started
 

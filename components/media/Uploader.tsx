@@ -98,16 +98,16 @@ export function Uploader({ location }: UploaderProps) {
         disabled={full || busy}
         onClick={() => inputRef.current?.click()}
       >
-        + ADD MEDIA (IMAGES / VIDEO ≤{MAX_VIDEO_SECONDS}S)
+        + Add photos or video
       </button>
 
       <span className="label">
-        IMAGES -&gt; WEBP ≤{MAX_IMAGE_MB}MB // VIDEO ≤{MAX_VIDEO_SECONDS}S
+        Images → WebP ≤{MAX_IMAGE_MB} MB · video ≤{MAX_VIDEO_SECONDS}s
       </span>
 
       {full && (
         <span className="label">
-          MEDIA LIMIT REACHED — MAX {MAX_MEDIA_PER_LOCATION} PER LOCATION
+          Limit reached — max {MAX_MEDIA_PER_LOCATION} per place
         </span>
       )}
 

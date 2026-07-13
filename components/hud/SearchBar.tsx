@@ -4,7 +4,6 @@ import { useEffect, useRef, useState } from "react";
 import { useGlobeStore } from "@/lib/store";
 import { searchPlaces } from "@/lib/geocode";
 import { formatCoords } from "@/lib/geo";
-import { Input } from "@/components/ui/Input";
 import type { GeocodeResult } from "@/lib/types";
 
 const DEBOUNCE_MS = 400;
@@ -90,58 +89,70 @@ export default function SearchBar() {
   const showDropdown = open && results.length > 0;
 
   return (
-    <div className="relative w-72 lg:w-80">
-      <Input
-        value={query}
-        onChange={(e) => {
-          setQuery(e.target.value);
-          setOpen(true);
-        }}
-        onFocus={() => setOpen(true)}
-        onBlur={() => {
-          // Small delay so a click on a result row lands before the close.
-          blurTimerRef.current = window.setTimeout(() => setOpen(false), 150);
-        }}
-        onKeyDown={(e) => {
-          if (e.key === "Enter" && results.length > 0 && results[0]) {
-            e.preventDefault();
-            select(results[0]);
-          } else if (e.key === "Escape") {
-            setOpen(false);
-          }
-        }}
-        placeholder="SEARCH CITY / COUNTRY…"
-        aria-label="Search city or country"
-        autoComplete="off"
-        spellCheck={false}
-      />
-
-      {searching && (
-        <span className="absolute top-full left-0 mt-1 text-[10px] tracking-[0.2em] text-mute uppercase">
-          SEARCHING…
-        </span>
-      )}
+    <div className="relative w-full max-w-sm">
+      <div className="flex items-center gap-2 rounded-full bg-white px-4 py-2 shadow-[0_1px_4px_rgba(60,64,67,0.35)] focus-within:shadow-[0_1px_6px_rgba(60,64,67,0.45)]">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden className="shrink-0 text-mute">
+          <circle cx="11" cy="11" r="7" stroke="currentColor" strokeWidth="1.8" />
+          <path d="m20 20-3.2-3.2" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+        </svg>
+        <input
+          value={query}
+          onChange={(e) => {
+            setQuery(e.target.value);
+            setOpen(true);
+          }}
+          onFocus={() => setOpen(true)}
+          onBlur={() => {
+            blurTimerRef.current = window.setTimeout(() => setOpen(false), 150);
+          }}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" && results.length > 0 && results[0]) {
+              e.preventDefault();
+              select(results[0]);
+            } else if (e.key === "Escape") {
+              setOpen(false);
+            }
+          }}
+          placeholder="Search a city or country"
+          aria-label="Search city or country"
+          autoComplete="off"
+          spellCheck={false}
+          className="w-full bg-transparent text-sm text-fg outline-none placeholder:text-mute"
+        />
+        {searching && (
+          <span
+            aria-hidden
+            className="h-4 w-4 shrink-0 animate-spin rounded-full border-2 border-line border-t-sun"
+          />
+        )}
+      </div>
 
       {error && !searching && (
-        <p className="error-block absolute top-full right-0 left-0 z-40 mt-1">
+        <p className="error-block absolute top-full right-0 left-0 z-40 mt-2">
           {error}
         </p>
       )}
 
       {showDropdown && !searching && (
-        <div className="panel absolute top-full right-0 left-0 z-40 mt-1 max-h-72 overflow-y-auto">
+        <div className="panel absolute top-full right-0 left-0 z-40 mt-2 max-h-80 overflow-y-auto p-1">
           {results.map((r, i) => (
             <button
               key={`${r.latitude},${r.longitude},${i}`}
               type="button"
               onClick={() => select(r)}
-              className="flex w-full flex-col gap-0.5 border-b border-line px-3 py-2 text-left last:border-b-0 hover:bg-raise"
+              className="flex w-full items-start gap-3 rounded-lg px-3 py-2.5 text-left hover:bg-raise"
             >
-              <span className="w-full truncate text-xs font-bold text-fg uppercase">
-                {truncateName(r.name)}
-              </span>
-              <span className="text-[10px] tracking-[0.15em] text-mute">
-                {formatCoords(r.latitude, r.longitude)}
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden className="mt-0.5 shrink-0 text-mute">
+                <path d="M12 21s7-5.5 7-11a7 7 0 1 0-14 0c0 5.5 7 11 7 11Z" stroke="currentColor" strokeWidth="1.6" />
+                <circle cx="12" cy="10" r="2.4" stroke="currentColor" strokeWidth="1.6" />
+              </svg>
+              <span className="min-w-0 flex-1">
+                <span className="block truncate text-sm font-medium text-fg">
+                  {truncateName(r.name)}
+                </span>
+                <span className="block font-mono text-[11px] text-mute">
+                  {formatCoords(r.latitude, r.longitude)}
+                </span>
               </span>
             </button>
           ))}

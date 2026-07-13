@@ -16,6 +16,13 @@ export interface PendingPin {
   suggestedName?: string;
 }
 
+/** Live camera readout for the Google-Earth-style bottom bar. */
+export interface CameraView {
+  lat: number;
+  lon: number;
+  altitudeKm: number;
+}
+
 interface GlobeStore {
   locations: LocationRow[];
   setLocations: (locations: LocationRow[]) => void;
@@ -30,6 +37,9 @@ interface GlobeStore {
 
   pendingPin: PendingPin | null;
   setPendingPin: (pin: PendingPin | null) => void;
+
+  cameraView: CameraView | null;
+  setCameraView: (view: CameraView) => void;
 
   mediaByLocation: Record<string, MediaItem[]>;
   setMediaForLocation: (locationId: string, items: MediaItem[]) => void;
@@ -72,6 +82,9 @@ export const useGlobeStore = create<GlobeStore>()((set) => ({
 
   pendingPin: null,
   setPendingPin: (pin) => set({ pendingPin: pin }),
+
+  cameraView: null,
+  setCameraView: (view) => set({ cameraView: view }),
 
   mediaByLocation: {},
   setMediaForLocation: (locationId, items) =>

@@ -5,6 +5,8 @@ import { useGlobeStore } from "@/lib/store";
 import { listLocations } from "@/lib/data/locations";
 import GlobeScene from "@/components/globe/GlobeScene";
 import TopBar from "@/components/hud/TopBar";
+import ZoomControls from "@/components/hud/ZoomControls";
+import CoordReadout from "@/components/hud/CoordReadout";
 import LocationPanel from "@/components/panels/LocationPanel";
 import AddLocationDialog from "@/components/panels/AddLocationDialog";
 
@@ -42,32 +44,32 @@ export default function GlobeApp({ configured, userEmail }: GlobeAppProps) {
   }, [configured, setLocations]);
 
   return (
-    <main className="relative h-dvh w-full overflow-hidden bg-ink">
+    <main className="relative h-dvh w-full overflow-hidden bg-[#0b0e14]">
       <GlobeScene />
 
       <TopBar configured={configured} userEmail={userEmail} />
 
-      <div className="pointer-events-none absolute inset-x-0 top-14 z-20 flex flex-col items-center gap-2 px-4">
+      <div className="pointer-events-none absolute inset-x-0 top-16 z-20 flex flex-col items-center gap-2 px-4">
         {!configured && (
-          <p className="notice-block pointer-events-auto mt-2">
-            SUPABASE NOT CONFIGURED — SET NEXT_PUBLIC_SUPABASE_URL /
-            NEXT_PUBLIC_SUPABASE_ANON_KEY. RUNNING IN VIEW-ONLY MODE.
+          <p className="notice-block pointer-events-auto max-w-xl text-center shadow-lg">
+            Supabase not configured — set NEXT_PUBLIC_SUPABASE_URL /
+            NEXT_PUBLIC_SUPABASE_ANON_KEY. Running in view-only mode.
           </p>
         )}
         {bootError && (
-          <p className="error-block pointer-events-auto mt-2">{bootError}</p>
+          <p className="error-block pointer-events-auto shadow-lg">{bootError}</p>
         )}
       </div>
 
       <LocationPanel />
       <AddLocationDialog />
 
-      <footer className="pointer-events-none absolute inset-x-0 bottom-0 z-20 flex justify-between border-t border-line bg-ink/70 px-4 py-2 backdrop-blur-md">
-        <span className="label">
-          Drag to rotate · Scroll to zoom · Click the globe to pin
-        </span>
-        <span className="label">Travel the World · your atlas of memories</span>
-      </footer>
+      <ZoomControls />
+      <CoordReadout />
+
+      <div className="pointer-events-none absolute bottom-4 left-4 z-20 hidden sm:block">
+        <span className="g-readout">Drag to rotate · scroll to zoom · click to pin</span>
+      </div>
     </main>
   );
 }

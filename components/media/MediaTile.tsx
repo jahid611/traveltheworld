@@ -84,14 +84,14 @@ export function MediaTile({ locationId, item }: MediaTileProps) {
           />
         )
       ) : (
-        <div className="flex h-full w-full items-center justify-center">
-          <span className="label">UNAVAILABLE</span>
+        <div className="flex h-full w-full items-center justify-center bg-raise">
+          <span className="text-[11px] text-mute">Unavailable</span>
         </div>
       )}
 
       {/* Type tag */}
-      <span className="label pointer-events-none absolute bottom-1 left-1 bg-ink/80 px-1">
-        {item.media_type === "image" ? "IMG" : "VID"}
+      <span className="pointer-events-none absolute bottom-1 left-1 rounded bg-black/60 px-1.5 py-0.5 text-[10px] font-medium tracking-wide text-white">
+        {item.media_type === "image" ? "Photo" : "Video"}
       </span>
 
       {/* Two-step delete — hover on pointer devices, focus-within for touch/kb */}
@@ -100,14 +100,20 @@ export function MediaTile({ locationId, item }: MediaTileProps) {
         onClick={() => void handleDelete()}
         disabled={deleting}
         aria-label={confirming ? "Confirm delete media" : "Delete media"}
-        className="absolute top-1 right-1 border border-fg bg-ink/80 px-1.5 py-0.5 text-[10px] font-bold tracking-[0.1em] text-fg uppercase opacity-0 group-focus-within:opacity-100 group-hover:opacity-100 hover:bg-fg hover:text-ink focus:opacity-100 disabled:opacity-40"
+        className={`absolute top-1 right-1 grid h-7 min-w-7 place-items-center rounded-full px-1.5 text-[11px] font-medium opacity-0 shadow transition group-focus-within:opacity-100 group-hover:opacity-100 focus:opacity-100 disabled:opacity-40 ${
+          confirming ? "bg-coral text-white" : "bg-white/90 text-fg hover:bg-white"
+        }`}
       >
-        {deleting ? "..." : confirming ? "SURE?" : "X"}
+        {deleting ? "…" : confirming ? "Sure?" : (
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden>
+            <path d="M6 6l12 12M18 6L6 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+          </svg>
+        )}
       </button>
 
       {failed && (
-        <div className="error-block absolute inset-x-0 bottom-0 !p-1 text-center !text-[10px]">
-          DELETE FAILED
+        <div className="error-block absolute inset-x-0 bottom-0 rounded-none text-center !text-[10px]">
+          Delete failed
         </div>
       )}
     </div>

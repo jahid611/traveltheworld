@@ -16,11 +16,19 @@ export function Checkbox({ children, className = "", ...props }: CheckboxProps) 
       <input type="checkbox" className="peer sr-only" {...props} />
       <span
         aria-hidden
-        className="mt-0.5 flex h-4 w-4 shrink-0 items-center justify-center border border-fg bg-transparent text-[10px] font-bold text-transparent peer-checked:bg-fg peer-checked:text-ink peer-focus-visible:outline peer-focus-visible:outline-1 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-fg"
+        className="mt-0.5 grid h-[18px] w-[18px] shrink-0 place-items-center rounded-[3px] border-2 border-line-strong bg-white text-white transition-colors peer-checked:border-sun peer-checked:bg-sun peer-focus-visible:outline peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-sun"
       >
-        X
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" aria-hidden>
+          <path
+            d="M5 12.5l4.5 4.5L19 7"
+            stroke="currentColor"
+            strokeWidth="2.6"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </svg>
       </span>
-      <span className="text-xs leading-relaxed text-mute group-hover:text-fg">
+      <span className="text-[13px] leading-relaxed text-mute group-hover:text-fg">
         {children}
       </span>
     </label>

@@ -30,12 +30,12 @@ export default function SignUpForm() {
     if (!configured || loading) return;
 
     if (password.length < 8) {
-      setError("PASSWORD MUST BE AT LEAST 8 CHARACTERS");
+      setError("Password must be at least 8 characters.");
       return;
     }
     // Explicit state check on top of the checkbox 'required' attribute.
     if (!cguAccepted) {
-      setError("YOU MUST ACCEPT THE TERMS OF SERVICE (CGU)");
+      setError("You must accept the Terms of Service (CGU).");
       return;
     }
 
@@ -66,10 +66,13 @@ export default function SignUpForm() {
     return (
       <div className="flex flex-col gap-4">
         <p className="notice-block" role="status">
-          CHECK YOUR INBOX — CONFIRM YOUR EMAIL TO ACTIVATE THE ACCOUNT
+          Check your inbox — confirm your email to activate the account.
         </p>
-        <Link href="/login" className="label hover:text-fg">
-          {"-> BACK TO LOG IN"}
+        <Link
+          href="/login"
+          className="text-sm font-medium text-sun hover:underline"
+        >
+          {"← Back to sign in"}
         </Link>
       </div>
     );
@@ -81,35 +84,35 @@ export default function SignUpForm() {
     <form onSubmit={handleSubmit} className="flex flex-col gap-4">
       {!configured && (
         <p className="notice-block">
-          SUPABASE NOT CONFIGURED — SET NEXT_PUBLIC_SUPABASE_URL AND
-          NEXT_PUBLIC_SUPABASE_ANON_KEY IN .ENV.LOCAL, THEN RESTART. SIGN UP IS
-          DISABLED.
+          Supabase not configured — set NEXT_PUBLIC_SUPABASE_URL and
+          NEXT_PUBLIC_SUPABASE_ANON_KEY in .env.local, then restart. Sign up is
+          disabled.
         </p>
       )}
 
       {error && <p className="error-block" role="alert">{error}</p>}
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-        <Field label="FIRST NAME" htmlFor="signup-first-name">
+        <Field label="First name" htmlFor="signup-first-name">
           <Input
             id="signup-first-name"
             name="firstName"
             type="text"
             autoComplete="given-name"
-            placeholder="ADA"
+            placeholder="Ada"
             required
             disabled={disabled}
             value={firstName}
             onChange={(e) => setFirstName(e.target.value)}
           />
         </Field>
-        <Field label="LAST NAME" htmlFor="signup-last-name">
+        <Field label="Last name" htmlFor="signup-last-name">
           <Input
             id="signup-last-name"
             name="lastName"
             type="text"
             autoComplete="family-name"
-            placeholder="LOVELACE"
+            placeholder="Lovelace"
             required
             disabled={disabled}
             value={lastName}
@@ -118,13 +121,13 @@ export default function SignUpForm() {
         </Field>
       </div>
 
-      <Field label="EMAIL" htmlFor="signup-email">
+      <Field label="Email" htmlFor="signup-email">
         <Input
           id="signup-email"
           name="email"
           type="email"
           autoComplete="email"
-          placeholder="YOU@EXAMPLE.COM"
+          placeholder="you@example.com"
           required
           disabled={disabled}
           value={email}
@@ -132,13 +135,13 @@ export default function SignUpForm() {
         />
       </Field>
 
-      <Field label="PASSWORD (MIN 8 CHARACTERS)" htmlFor="signup-password">
+      <Field label="Password (min 8 characters)" htmlFor="signup-password">
         <Input
           id="signup-password"
           name="password"
           type="password"
           autoComplete="new-password"
-          placeholder="********"
+          placeholder="••••••••"
           required
           minLength={8}
           disabled={disabled}
@@ -147,22 +150,22 @@ export default function SignUpForm() {
         />
       </Field>
 
-      <details className="border border-line bg-ink p-3">
-        <summary className="label cursor-pointer select-none">
-          TERMS OF SERVICE (CGU/CGD) — SUMMARY
+      <details className="rounded-lg border border-line bg-raise p-3">
+        <summary className="cursor-pointer text-sm font-medium text-fg select-none">
+          Terms of Service (CGU/CGD) — summary
         </summary>
-        <ul className="mt-3 flex flex-col gap-2 text-xs leading-relaxed text-mute">
+        <ul className="mt-3 flex list-disc flex-col gap-2 pl-4 text-[13px] leading-relaxed text-mute">
           <li>
-            01 // DATA OWNERSHIP — YOUR PINS AND MEDIA BELONG TO YOU. THEY ARE
-            PRIVATE, OWNER-ONLY, AND NEVER SHARED OR SOLD.
+            Data ownership — your pins and media belong to you. They are private,
+            owner-only, and never shared or sold.
           </li>
           <li>
-            02 // MEDIA LIMITS — MAX 15 FILES PER LOCATION. IMAGES: MAX 2 MB
-            (WEBP). VIDEOS: MAX 15 SECONDS.
+            Media limits — up to 15 files per location. Images: max 2 MB (WebP).
+            Videos: max 15 seconds.
           </li>
           <li>
-            03 // DELETION RIGHTS — DELETE ANY PIN, ANY FILE, OR YOUR ENTIRE
-            ACCOUNT AT ANY TIME. DELETION IS PERMANENT.
+            Deletion rights — delete any pin, any file, or your entire account at
+            any time. Deletion is permanent.
           </li>
         </ul>
       </details>
@@ -174,8 +177,8 @@ export default function SignUpForm() {
         checked={cguAccepted}
         onChange={(e) => setCguAccepted(e.target.checked)}
       >
-        I ACCEPT THE TERMS OF SERVICE (CGU/CGD) SUMMARIZED ABOVE. REQUIRED TO
-        CREATE AN ACCOUNT.
+        I accept the Terms of Service (CGU/CGD) summarized above. Required to
+        create an account.
       </Checkbox>
 
       <Button
@@ -184,7 +187,7 @@ export default function SignUpForm() {
         className="w-full"
         disabled={disabled || !cguAccepted}
       >
-        {loading ? "WORKING…" : "CREATE ACCOUNT ->"}
+        {loading ? "Creating account…" : "Create account"}
       </Button>
     </form>
   );

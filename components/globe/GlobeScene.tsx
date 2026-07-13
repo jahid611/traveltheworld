@@ -27,22 +27,20 @@ export default function GlobeScene() {
           far: 100,
         }}
       >
-        <color attach="background" args={["#050d15"]} />
-        <fog attach="fog" args={["#050d15", 6, 14]} />
+        <color attach="background" args={["#05070d"]} />
 
-        {/* Warm key light (sunset side) + cool fill for the shaded limb. */}
-        <ambientLight intensity={0.35} />
-        <directionalLight position={[4, 2.5, 3]} intensity={1.15} color="#ffe6c2" />
-        <directionalLight position={[-4, -1, -2]} intensity={0.3} color="#5f9bd0" />
+        {/* Single "sun" key light + generous ambient for a bright, evenly-lit globe. */}
+        <ambientLight intensity={0.62} />
+        <directionalLight position={[5, 3, 5]} intensity={1.35} color="#fff6ec" />
 
         <Stars
-          radius={80}
-          depth={40}
-          count={3500}
-          factor={3.2}
+          radius={90}
+          depth={50}
+          count={2600}
+          factor={3}
           saturation={0}
           fade
-          speed={0.4}
+          speed={0.3}
         />
 
         <Suspense fallback={null}>

@@ -6,7 +6,6 @@ import { listMediaWithUrls } from "@/lib/data/media";
 import { deleteLocation } from "@/lib/data/locations";
 import { formatCoords } from "@/lib/geo";
 import { MAX_MEDIA_PER_LOCATION } from "@/lib/constants";
-import { Button } from "@/components/ui/Button";
 import { Uploader } from "@/components/media/Uploader";
 import { MediaGrid } from "@/components/media/MediaGrid";
 
@@ -109,16 +108,16 @@ export default function LocationPanel() {
   };
 
   return (
-    <aside className="panel absolute top-14 right-0 bottom-8 z-20 flex w-full max-w-sm flex-col overflow-hidden border-l">
+    <aside className="panel absolute top-20 right-4 bottom-16 z-20 flex w-[calc(100%-2rem)] max-w-sm flex-col overflow-hidden">
       {/* Header */}
       <div className="flex items-start justify-between gap-3 border-b border-line p-4">
         <div className="min-w-0">
-          <span className="label">LOCATION</span>
-          <h2 className="mt-1 text-lg font-bold break-words uppercase">
+          <span className="label">Place</span>
+          <h2 className="mt-0.5 text-xl leading-tight font-medium break-words text-fg">
             {location.name}
           </h2>
-          <p className="mt-1 text-xs text-mute">
-            {formatCoords(location.latitude, location.longitude)} //{" "}
+          <p className="mt-1 font-mono text-xs text-mute">
+            {formatCoords(location.latitude, location.longitude)} ·{" "}
             {new Date(location.created_at).toISOString().slice(0, 10)}
           </p>
         </div>
@@ -126,19 +125,26 @@ export default function LocationPanel() {
           type="button"
           onClick={() => selectLocation(null)}
           aria-label="Close panel"
-          className="shrink-0 border border-line px-2 py-0.5 text-xs font-bold text-fg hover:bg-fg hover:text-ink"
+          className="grid h-8 w-8 shrink-0 place-items-center rounded-full text-mute transition-colors hover:bg-raise hover:text-fg"
         >
-          X
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden>
+            <path
+              d="M6 6l12 12M18 6L6 18"
+              stroke="currentColor"
+              strokeWidth="1.8"
+              strokeLinecap="round"
+            />
+          </svg>
         </button>
       </div>
 
       {/* Scrollable content */}
       <div className="flex flex-1 flex-col gap-4 overflow-y-auto p-4">
         <span className="label">
-          MEDIA {mediaCount}/{MAX_MEDIA_PER_LOCATION}
+          Media · {mediaCount}/{MAX_MEDIA_PER_LOCATION}
         </span>
 
-        {mediaLoading && <span className="label">LOADING MEDIA…</span>}
+        {mediaLoading && <span className="label">Loading media…</span>}
         {mediaError && <p className="error-block">{mediaError}</p>}
 
         <Uploader location={location} />
@@ -148,18 +154,22 @@ export default function LocationPanel() {
       {/* Footer */}
       <div className="flex flex-col gap-2 border-t border-line p-4">
         {deleteError && <p className="error-block">{deleteError}</p>}
-        <Button
-          variant={confirmingDelete ? "invert" : "solid"}
-          className="w-full"
+        <button
+          type="button"
           onClick={() => void handleDelete()}
           disabled={deleting}
+          className={`w-full rounded-full px-4 py-2.5 text-sm font-medium transition-colors disabled:opacity-60 ${
+            confirmingDelete
+              ? "bg-coral text-white hover:opacity-90"
+              : "text-coral hover:bg-[#fce8e6]"
+          }`}
         >
           {deleting
-            ? "DELETING…"
+            ? "Deleting…"
             : confirmingDelete
-              ? "CONFIRM DELETE?"
-              : "DELETE LOCATION"}
-        </Button>
+              ? "Confirm delete"
+              : "Delete place"}
+        </button>
       </div>
     </aside>
   );

@@ -18,7 +18,7 @@ export default function AddLocationDialog() {
   return (
     <Dialog
       open={pendingPin !== null}
-      title="PIN THIS LOCATION"
+      title="Pin this place"
       onClose={() => setPendingPin(null)}
     >
       {pendingPin && (
@@ -88,13 +88,13 @@ function PinForm({ pin }: { pin: PendingPin }) {
       className="flex flex-col gap-4"
     >
       <div>
-        <span className="label">COORDINATES</span>
-        <p className="mt-1 font-mono text-sm">
+        <span className="label">Coordinates</span>
+        <p className="mt-1 font-mono text-sm text-fg">
           {formatCoords(pin.lat, pin.lon)}
         </p>
       </div>
 
-      <Field label="NAME" htmlFor="pin-name">
+      <Field label="Name" htmlFor="pin-name">
         <Input
           id="pin-name"
           value={name}
@@ -102,7 +102,7 @@ function PinForm({ pin }: { pin: PendingPin }) {
             touchedRef.current = true;
             setName(e.target.value);
           }}
-          placeholder="NAME THIS PLACE…"
+          placeholder="Name this place…"
           autoComplete="off"
           spellCheck={false}
           autoFocus
@@ -117,14 +117,14 @@ function PinForm({ pin }: { pin: PendingPin }) {
           onClick={() => useGlobeStore.getState().setPendingPin(null)}
           disabled={saving}
         >
-          CANCEL
+          Cancel
         </Button>
         <Button
           type="submit"
           variant="invert"
           disabled={name.trim().length === 0 || saving}
         >
-          {saving ? "SAVING…" : "SAVE LOCATION"}
+          {saving ? "Saving…" : "Save place"}
         </Button>
       </div>
     </form>

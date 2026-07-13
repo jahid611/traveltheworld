@@ -28,8 +28,8 @@ export default function Atmosphere() {
         side: BackSide,
         depthWrite: false,
         uniforms: {
-          uColor: { value: [0.42, 0.68, 0.92] },
-          uIntensity: { value: 0.9 },
+          uColor: { value: [0.36, 0.62, 1.0] }, // Google-Earth sky blue
+          uIntensity: { value: 1.05 },
         },
         vertexShader: /* glsl */ `
           varying vec3 vNormal;

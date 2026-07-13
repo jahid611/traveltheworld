@@ -8,9 +8,11 @@ import type { OrbitControls as OrbitControlsImpl } from "three-stdlib";
 import {
   CAMERA_MAX_DISTANCE,
   CAMERA_MIN_DISTANCE,
+  EARTH_RADIUS_KM,
   FLY_TO_DURATION_MS,
+  GLOBE_RADIUS,
 } from "@/lib/constants";
-import { easeInOutCubic, latLonToVector3 } from "@/lib/geo";
+import { easeInOutCubic, latLonToVector3, vector3ToLatLon } from "@/lib/geo";
 import { useGlobeStore } from "@/lib/store";
 
 const IDENTITY_Q = new Quaternion();
@@ -36,6 +38,8 @@ export default function CameraRig() {
 
   // Pre-allocated temp — zero allocations inside useFrame.
   const tmpQ = useRef(new Quaternion());
+  const readoutAccum = useRef(0);
+  const setCameraView = useGlobeStore((s) => s.setCameraView);
 
   const [autoRotate, setAutoRotate] = useState(true);
 
@@ -76,7 +80,17 @@ export default function CameraRig() {
     if (controlsRef.current) controlsRef.current.enabled = false;
   }, [flyTo, camera]);
 
-  useFrame(() => {
+  useFrame((_, delta) => {
+    // Publish a throttled camera readout (~6/s) for the bottom coordinate bar.
+    readoutAccum.current += delta;
+    if (readoutAccum.current >= 0.15) {
+      readoutAccum.current = 0;
+      const { lat, lon } = vector3ToLatLon(camera.position);
+      const altitudeKm =
+        (camera.position.length() - GLOBE_RADIUS) * EARTH_RADIUS_KM;
+      setCameraView({ lat, lon, altitudeKm });
+    }
+
     const tween = tweenRef.current;
     if (!tween) return;
 

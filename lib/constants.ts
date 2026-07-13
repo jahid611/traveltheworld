@@ -1,6 +1,8 @@
 /** Globe geometry */
 export const GLOBE_RADIUS = 1;
 export const MARKER_ALTITUDE = 0.008;
+/** Mean Earth radius — maps globe units to kilometres for the camera readout. */
+export const EARTH_RADIUS_KM = 6371;
 
 /** Camera mechanics */
 export const CAMERA_INITIAL_DISTANCE = 2.8;

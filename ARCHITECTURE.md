@@ -180,25 +180,32 @@ scripts/        build-world-data.mjs (one-shot asset generation)
 public/data/    world-lines.json (pre-baked country outlines)
 ```
 
-## 8. Design system — "night atlas" (travel theme)
+## 8. Design system — Google-Earth style
 
-Warm, atmospheric, editorial — evokes a vintage illuminated globe at night.
-Tokens live in `app/globals.css` under `@theme`; component classes (`.btn`,
-`.panel`, `.input`, `.label`, `.accent-sun`, `.error-block`, `.notice-block`)
-are the single source of styling so a token remap restyles the whole app.
+Clean, light chrome floating over a photoreal globe in black space. Tokens
+live in `app/globals.css` under `@theme`; component classes (`.btn`,
+`.btn-invert`, `.panel`, `.input`, `.label`, `.g-control`, `.g-readout`,
+`.error-block`, `.notice-block`) are the single source of styling so a token
+remap restyles the whole app.
 
-- **Palette** — surfaces are deep sea-night (`--color-ink #0a1723` →
-  `--color-ink-deep #050d15`), text is warm parchment (`--color-fg #f6ecdb`)
-  and dusty blue (`--color-mute`). Accents: sunset amber (`--color-sun`,
-  `--color-sun-deep`) for CTAs and highlights, gold (`--color-gold`) for
-  cartography, teal (`--color-sea`) for notices, coral (`--color-coral`) for
-  destructive/errors. Emphasis is by **warm accent**, not inversion.
-- **Type** — Fraunces (serif) for editorial display headings, Inter for UI,
-  JetBrains Mono for coordinate readouts, via `next/font/google`.
-- **Surfaces** — frosted-glass "postcard" panels (`backdrop-blur`, soft radii
-  8–22px, gentle drop shadows), sunset-gradient primary buttons with glow.
-- **Globe scene** — deep-ocean `MeshStandardMaterial` sphere, gold
-  `LineSegments` coastlines, faint teal graticule, a fresnel **atmosphere**
-  halo (back-side additive shader), a drei `Stars` field, and glowing amber
-  marker beacons (bright gold + coral when selected). Marker geometry and all
-  materials remain module-level singletons (performance contract unchanged).
+- **Palette** — Google Material: primary blue `--color-sun #1a73e8`
+  (`--color-sun-deep #1765cc`), white card surfaces (`--color-panel`), grey
+  scale for text (`--color-fg #202124`, `--color-mute #5f6368`) and borders
+  (`--color-line #dadce0`). Green `--color-sea` for notices, red
+  `--color-coral #d93025` for destructive/errors. Dark space
+  (`--color-ink #0b0e14`) only behind the globe and on readout chips.
+- **Type** — Roboto for all UI, Roboto Mono for coordinate readouts, via
+  `next/font/google`.
+- **Chrome** — pill buttons, circular white controls (`.g-control`) with soft
+  Material elevation, a rounded white search pill, floating white card panels,
+  and dark translucent readout chips (`.g-readout`) on the globe.
+- **Globe scene** (`components/globe/`) — a photoreal Earth: `MeshPhongMaterial`
+  with a satellite **day map**, **specular map** (shiny oceans) and **normal
+  map** (terrain relief) from the three.js texture set (NASA Blue Marble
+  derivatives, `public/textures/`), lit by a single directional "sun" plus
+  ambient. A fresnel **atmosphere** halo (back-side additive shader), a drei
+  `Stars` field, and glowing amber marker beacons (module-level singleton
+  geometry/materials — performance contract unchanged).
+- **In-app controls** — `ZoomControls` (bottom-right +/- and reset, driving
+  OrbitControls via synthetic wheel events) and `CoordReadout` (bottom-center
+  live latitude/longitude + camera altitude, throttled from `CameraRig`).
