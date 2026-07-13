@@ -1,6 +1,6 @@
 export type MediaType = "image" | "video";
 
-export interface ProfileRow {
+export type ProfileRow = {
   id: string;
   first_name: string;
   last_name: string;
@@ -9,7 +9,7 @@ export interface ProfileRow {
   created_at: string;
 }
 
-export interface LocationRow {
+export type LocationRow = {
   id: string;
   user_id: string;
   name: string;
@@ -18,7 +18,7 @@ export interface LocationRow {
   created_at: string;
 }
 
-export interface MediaRow {
+export type MediaRow = {
   id: string;
   location_id: string;
   user_id: string;
@@ -27,7 +27,7 @@ export interface MediaRow {
   created_at: string;
 }
 
-export interface LocationInsert {
+export type LocationInsert = {
   id?: string;
   user_id: string;
   name: string;
@@ -36,7 +36,7 @@ export interface LocationInsert {
   created_at?: string;
 }
 
-export interface MediaInsert {
+export type MediaInsert = {
   id?: string;
   location_id: string;
   user_id: string;
@@ -45,7 +45,7 @@ export interface MediaInsert {
   created_at?: string;
 }
 
-export interface ProfileUpdate {
+export type ProfileUpdate = {
   first_name?: string;
   last_name?: string;
   email?: string;
@@ -75,28 +75,28 @@ export type Database = {
         Relationships: [];
       };
     };
-    Views: Record<string, never>;
-    Functions: Record<string, never>;
+    Views: { [_ in never]: never };
+    Functions: { [_ in never]: never };
     Enums: {
       media_type: MediaType;
     };
-    CompositeTypes: Record<string, never>;
+    CompositeTypes: { [_ in never]: never };
   };
 };
 
 /** A media row enriched with a short-lived signed URL for rendering. */
-export interface MediaItem extends MediaRow {
+export type MediaItem = MediaRow & {
   signedUrl: string;
-}
+};
 
-export interface GeocodeResult {
+export type GeocodeResult = {
   name: string;
   latitude: number;
   longitude: number;
 }
 
 /** Output of the client-side optimization pipeline, ready for upload. */
-export interface OptimizedMedia {
+export type OptimizedMedia = {
   blob: Blob;
   ext: "webp" | "mp4" | "webm";
   contentType: string;
