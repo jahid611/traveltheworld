@@ -1,13 +1,7 @@
 "use client";
 
 import { useMemo } from "react";
-import {
-  BoxGeometry,
-  MeshBasicMaterial,
-  MeshStandardMaterial,
-  Quaternion,
-  Vector3,
-} from "three";
+import { AdditiveBlending, MeshBasicMaterial, SphereGeometry, Vector3 } from "three";
 import type { ThreeEvent } from "@react-three/fiber";
 import type { LocationRow } from "@/lib/types";
 import { GLOBE_RADIUS, MARKER_ALTITUDE } from "@/lib/constants";
@@ -16,42 +10,43 @@ import { useGlobeStore } from "@/lib/store";
 
 /* ---------------------------------------------------------------------------
    PERFORMANCE CONTRACT: geometry + materials are module-level singletons
-   shared by every marker mesh. Highlighting swaps between shared materials —
-   never clone, never allocate per marker.
+   shared by every marker mesh. Highlighting swaps between shared materials
+   and scales the mesh — never clone, never allocate per marker.
 --------------------------------------------------------------------------- */
-const markerGeometry = new BoxGeometry(0.018, 0.018, 0.045);
+const coreGeometry = new SphereGeometry(0.016, 20, 20);
+const haloGeometry = new SphereGeometry(0.03, 20, 20);
 
-const baseMaterial = new MeshStandardMaterial({
-  color: "#ededed",
-  roughness: 1,
-  metalness: 0,
-});
-
-/** Inverted/bright — unlit full white so selection reads as inversion. */
-const selectedMaterial = new MeshBasicMaterial({ color: "#ffffff" });
-
-const mutedMaterial = new MeshStandardMaterial({
-  color: "#737373",
-  roughness: 1,
-  metalness: 0,
+/** Unlit so beacons glow regardless of scene lighting. */
+const baseMaterial = new MeshBasicMaterial({ color: "#f2a25c" }); // amber
+const selectedMaterial = new MeshBasicMaterial({ color: "#fff1d6" }); // bright gold
+const mutedMaterial = new MeshBasicMaterial({
+  color: "#f6ecdb",
   transparent: true,
-  opacity: 0.7,
+  opacity: 0.6,
+}); // pendingPin ghost
+
+const haloMaterial = new MeshBasicMaterial({
+  color: "#f2a25c",
+  transparent: true,
+  opacity: 0.28,
+  blending: AdditiveBlending,
+  depthWrite: false,
+});
+const selectedHaloMaterial = new MeshBasicMaterial({
+  color: "#e8705f",
+  transparent: true,
+  opacity: 0.5,
+  blending: AdditiveBlending,
+  depthWrite: false,
 });
 
-/** The box's long axis is Z; align it with the surface normal. */
-const Z_AXIS = new Vector3(0, 0, 1);
+const SELECTED_SCALE = 1.5;
 
-const SELECTED_SCALE = 1.6;
-
-function useMarkerTransform(lat: number, lon: number) {
-  return useMemo(() => {
-    const position = latLonToVector3(lat, lon, GLOBE_RADIUS + MARKER_ALTITUDE);
-    const quaternion = new Quaternion().setFromUnitVectors(
-      Z_AXIS,
-      position.clone().normalize(),
-    );
-    return { position, quaternion };
-  }, [lat, lon]);
+function useMarkerPosition(lat: number, lon: number): Vector3 {
+  return useMemo(
+    () => latLonToVector3(lat, lon, GLOBE_RADIUS + MARKER_ALTITUDE),
+    [lat, lon],
+  );
 }
 
 function setCursor(cursor: "pointer" | "auto") {
@@ -64,10 +59,7 @@ interface LocationMarkerProps {
 }
 
 function LocationMarker({ location, selected }: LocationMarkerProps) {
-  const { position, quaternion } = useMarkerTransform(
-    location.latitude,
-    location.longitude,
-  );
+  const position = useMarkerPosition(location.latitude, location.longitude);
 
   const handleClick = (event: ThreeEvent<MouseEvent>) => {
     event.stopPropagation();
@@ -77,39 +69,34 @@ function LocationMarker({ location, selected }: LocationMarkerProps) {
   };
 
   return (
-    <mesh
-      geometry={markerGeometry}
-      material={selected ? selectedMaterial : baseMaterial}
-      position={position}
-      quaternion={quaternion}
-      scale={selected ? SELECTED_SCALE : 1}
-      onClick={handleClick}
-      onPointerOver={() => setCursor("pointer")}
-      onPointerOut={() => setCursor("auto")}
-    />
+    <group position={position} scale={selected ? SELECTED_SCALE : 1}>
+      <mesh
+        geometry={haloGeometry}
+        material={selected ? selectedHaloMaterial : haloMaterial}
+      />
+      <mesh
+        geometry={coreGeometry}
+        material={selected ? selectedMaterial : baseMaterial}
+        onClick={handleClick}
+        onPointerOver={() => setCursor("pointer")}
+        onPointerOut={() => setCursor("auto")}
+      />
+    </group>
   );
-}
-
-interface GhostMarkerProps {
-  lat: number;
-  lon: number;
 }
 
 /** Muted, semi-transparent preview for the not-yet-saved pendingPin. */
-function GhostMarker({ lat, lon }: GhostMarkerProps) {
-  const { position, quaternion } = useMarkerTransform(lat, lon);
-
+function GhostMarker({ lat, lon }: { lat: number; lon: number }) {
+  const position = useMarkerPosition(lat, lon);
   return (
-    <mesh
-      geometry={markerGeometry}
-      material={mutedMaterial}
-      position={position}
-      quaternion={quaternion}
-    />
+    <group position={position}>
+      <mesh geometry={haloGeometry} material={haloMaterial} />
+      <mesh geometry={coreGeometry} material={mutedMaterial} />
+    </group>
   );
 }
 
-/** One mesh per saved location plus the pendingPin ghost. */
+/** One beacon per saved location plus the pendingPin ghost. */
 export default function Markers() {
   const locations = useGlobeStore((s) => s.locations);
   const selectedLocationId = useGlobeStore((s) => s.selectedLocationId);
@@ -124,9 +111,7 @@ export default function Markers() {
           selected={location.id === selectedLocationId}
         />
       ))}
-      {pendingPin && (
-        <GhostMarker lat={pendingPin.lat} lon={pendingPin.lon} />
-      )}
+      {pendingPin && <GhostMarker lat={pendingPin.lat} lon={pendingPin.lon} />}
     </group>
   );
 }

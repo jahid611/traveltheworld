@@ -26,16 +26,15 @@ export default function TopBar({ configured, userEmail }: TopBarProps) {
   };
 
   return (
-    <header className="absolute inset-x-0 top-0 z-30 flex h-14 items-center gap-4 border-b border-line bg-ink/95 px-4">
+    <header className="absolute inset-x-0 top-0 z-30 flex h-14 items-center gap-4 border-b border-line bg-ink/70 px-4 backdrop-blur-md">
       {/* Brand */}
       <div className="flex min-w-0 shrink-0 items-center gap-3">
-        <span className="flex h-8 w-8 shrink-0 items-center justify-center bg-fg text-xs font-black text-ink">
+        <span className="accent-sun flex h-8 w-8 shrink-0 items-center justify-center rounded-md text-xs font-black">
           TW
         </span>
-        <span className="hidden text-sm font-bold tracking-widest uppercase md:inline">
-          TRAVELTHEWORLD
+        <span className="hidden font-display text-base font-semibold tracking-wide md:inline">
+          Travel the World
         </span>
-        <span className="hidden text-mute md:inline">///</span>
       </div>
 
       {/* Search — hidden on small screens */}

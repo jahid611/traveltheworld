@@ -36,9 +36,11 @@ export default function Earth() {
   const sphereMaterial = useMemo(
     () =>
       new MeshStandardMaterial({
-        color: "#111114",
-        roughness: 1,
-        metalness: 0,
+        color: "#123a52", // deep ocean
+        emissive: "#08202f", // keeps the night side from going pure black
+        emissiveIntensity: 0.6,
+        roughness: 0.82,
+        metalness: 0.12,
       }),
     [],
   );
@@ -79,9 +81,9 @@ export default function Earth() {
   const graticuleMaterial = useMemo(
     () =>
       new LineBasicMaterial({
-        color: "#1d1d1d",
+        color: "#2f5468", // faint teal meridians/parallels
         transparent: true,
-        opacity: 0.9,
+        opacity: 0.5,
       }),
     [],
   );
@@ -91,7 +93,12 @@ export default function Earth() {
     useState<BufferGeometry | null>(null);
 
   const outlineMaterial = useMemo(
-    () => new LineBasicMaterial({ color: "#8a8a8a" }),
+    () =>
+      new LineBasicMaterial({
+        color: "#e6c375", // warm gold coastlines — the illuminated-atlas look
+        transparent: true,
+        opacity: 0.92,
+      }),
     [],
   );
 

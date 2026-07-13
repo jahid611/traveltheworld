@@ -180,11 +180,25 @@ scripts/        build-world-data.mjs (one-shot asset generation)
 public/data/    world-lines.json (pre-baked country outlines)
 ```
 
-## 8. Design system — brutalism
+## 8. Design system — "night atlas" (travel theme)
 
-- Strict monochrome: `#050505 / #0d0d0d / #262626 / #737373 / #ededed`.
-  Emphasis by **inversion** (white block, black text), never by color.
-- `border-radius: 0` enforced globally (`* { border-radius: 0 !important }`).
-- Monospace-first type stack, uppercase micro-labels with wide tracking.
-- 1px/2px solid borders, hard edges, no shadows-as-decoration; offset
-  hard shadow (`4px 4px 0 0`) only to lift dialogs.
+Warm, atmospheric, editorial — evokes a vintage illuminated globe at night.
+Tokens live in `app/globals.css` under `@theme`; component classes (`.btn`,
+`.panel`, `.input`, `.label`, `.accent-sun`, `.error-block`, `.notice-block`)
+are the single source of styling so a token remap restyles the whole app.
+
+- **Palette** — surfaces are deep sea-night (`--color-ink #0a1723` →
+  `--color-ink-deep #050d15`), text is warm parchment (`--color-fg #f6ecdb`)
+  and dusty blue (`--color-mute`). Accents: sunset amber (`--color-sun`,
+  `--color-sun-deep`) for CTAs and highlights, gold (`--color-gold`) for
+  cartography, teal (`--color-sea`) for notices, coral (`--color-coral`) for
+  destructive/errors. Emphasis is by **warm accent**, not inversion.
+- **Type** — Fraunces (serif) for editorial display headings, Inter for UI,
+  JetBrains Mono for coordinate readouts, via `next/font/google`.
+- **Surfaces** — frosted-glass "postcard" panels (`backdrop-blur`, soft radii
+  8–22px, gentle drop shadows), sunset-gradient primary buttons with glow.
+- **Globe scene** — deep-ocean `MeshStandardMaterial` sphere, gold
+  `LineSegments` coastlines, faint teal graticule, a fresnel **atmosphere**
+  halo (back-side additive shader), a drei `Stars` field, and glowing amber
+  marker beacons (bright gold + coral when selected). Marker geometry and all
+  materials remain module-level singletons (performance contract unchanged).

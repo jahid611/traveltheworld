@@ -62,11 +62,11 @@ export default function GlobeApp({ configured, userEmail }: GlobeAppProps) {
       <LocationPanel />
       <AddLocationDialog />
 
-      <footer className="pointer-events-none absolute inset-x-0 bottom-0 z-20 flex justify-between border-t border-line bg-ink/90 px-4 py-2">
+      <footer className="pointer-events-none absolute inset-x-0 bottom-0 z-20 flex justify-between border-t border-line bg-ink/70 px-4 py-2 backdrop-blur-md">
         <span className="label">
-          DRAG TO ROTATE — SCROLL TO ZOOM — CLICK THE GLOBE TO PIN
+          Drag to rotate · Scroll to zoom · Click the globe to pin
         </span>
-        <span className="label">TRAVELTHEWORLD / BRUTALIST EDITION</span>
+        <span className="label">Travel the World · your atlas of memories</span>
       </footer>
     </main>
   );

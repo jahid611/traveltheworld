@@ -1,8 +1,8 @@
 # TRAVELTHEWORLD
 
-A lightweight, brutalist 3D globe web application. Pin your places on an
-interactive globe and attach client-side-optimized images and short videos to
-every pin. Monochrome, zero rounded corners, your data only.
+A lightweight, travel-themed 3D globe web application. Pin your places on an
+interactive night-atlas globe and attach client-side-optimized images and short
+videos to every pin. Warm sunset accents, gold cartography, your data only.
 
 Built with **Next.js 15 (App Router, TypeScript)**, **React Three Fiber +
 three.js**, **Tailwind CSS 4**, **Zustand**, and **Supabase** (Auth, Postgres
@@ -29,8 +29,9 @@ for the build checklist.
   lightweight MediaRecorder re-encode fallback for oversized files.
 - **Own your data** — RLS on every table, private storage bucket with
   owner-folder policies, signed URLs for reads.
-- **Strict brutalist UI** — monochrome shades, `border-radius: 0` enforced
-  globally, hard offset shadows, uppercase micro-labels.
+- **Travel "night atlas" UI** — deep sea-night background, glowing atmosphere
+  halo and starfield, gold coastlines, sunset-amber accents, frosted-glass
+  postcard panels, and editorial serif (Fraunces) display type.
 
 ## Getting started
 

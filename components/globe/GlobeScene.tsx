@@ -2,15 +2,17 @@
 
 import { Suspense } from "react";
 import { Canvas } from "@react-three/fiber";
+import { Stars } from "@react-three/drei";
 import { CAMERA_INITIAL_DISTANCE } from "@/lib/constants";
 import Earth from "@/components/globe/Earth";
+import Atmosphere from "@/components/globe/Atmosphere";
 import Markers from "@/components/globe/Markers";
 import CameraRig from "@/components/globe/CameraRig";
 
 /**
- * Fullscreen R3F canvas. Pure monochrome scene: near-black background,
- * low ambient light plus one soft directional for a flat matte globe.
- * No shadows, no postprocessing; dpr capped at 2.
+ * Fullscreen R3F canvas — a warm "night atlas": deep sea-night background,
+ * a drifting starfield, a soft key light for the ocean terminator, plus a
+ * cyan atmosphere halo. No shadows, no postprocessing; dpr capped at 2.
  */
 export default function GlobeScene() {
   return (
@@ -25,13 +27,27 @@ export default function GlobeScene() {
           far: 100,
         }}
       >
-        <color attach="background" args={["#050505"]} />
+        <color attach="background" args={["#050d15"]} />
+        <fog attach="fog" args={["#050d15", 6, 14]} />
 
-        <ambientLight intensity={0.4} />
-        <directionalLight position={[3, 2, 4]} intensity={0.8} />
+        {/* Warm key light (sunset side) + cool fill for the shaded limb. */}
+        <ambientLight intensity={0.35} />
+        <directionalLight position={[4, 2.5, 3]} intensity={1.15} color="#ffe6c2" />
+        <directionalLight position={[-4, -1, -2]} intensity={0.3} color="#5f9bd0" />
+
+        <Stars
+          radius={80}
+          depth={40}
+          count={3500}
+          factor={3.2}
+          saturation={0}
+          fade
+          speed={0.4}
+        />
 
         <Suspense fallback={null}>
           <Earth />
+          <Atmosphere />
           <Markers />
         </Suspense>
 
