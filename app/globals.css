@@ -1,0 +1,178 @@
+@import "tailwindcss";
+
+/* ---------------------------------------------------------------------------
+   BRUTALIST DESIGN SYSTEM — strict monochrome, zero border-radius, hard edges.
+--------------------------------------------------------------------------- */
+
+@theme {
+  --color-ink: #050505; /* page background */
+  --color-panel: #0d0d0d; /* raised surfaces */
+  --color-raise: #161616; /* hover surfaces */
+  --color-line: #262626; /* default border */
+  --color-line-strong: #3f3f3f;
+  --color-mute: #737373; /* secondary text */
+  --color-fg: #ededed; /* primary text */
+
+  --font-mono:
+    ui-monospace, "SFMono-Regular", "Menlo", "Consolas", "Liberation Mono",
+    monospace;
+  --font-sans:
+    ui-monospace, "SFMono-Regular", "Menlo", "Consolas", "Liberation Mono",
+    monospace;
+
+  /* Neutralize every Tailwind radius token. */
+  --radius-xs: 0px;
+  --radius-sm: 0px;
+  --radius-md: 0px;
+  --radius-lg: 0px;
+  --radius-xl: 0px;
+  --radius-2xl: 0px;
+  --radius-3xl: 0px;
+  --radius-4xl: 0px;
+}
+
+/* Non-negotiable: nothing in this app has a rounded corner. */
+*,
+*::before,
+*::after {
+  border-radius: 0 !important;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  background: var(--color-ink);
+  color: var(--color-fg);
+  font-family: var(--font-mono);
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: var(--color-fg);
+  color: var(--color-ink);
+}
+
+/* Square, monochrome scrollbars. */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-line-strong) var(--color-ink);
+}
+*::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+*::-webkit-scrollbar-track {
+  background: var(--color-ink);
+}
+*::-webkit-scrollbar-thumb {
+  background: var(--color-line-strong);
+  border: 2px solid var(--color-ink);
+}
+
+@layer components {
+  /* Micro-label: uppercase, wide tracking, muted. */
+  .label {
+    display: block;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--color-mute);
+  }
+
+  .input {
+    width: 100%;
+    border: 1px solid var(--color-line);
+    background: var(--color-ink);
+    padding: 0.5rem 0.75rem;
+    font-size: 0.875rem;
+    color: var(--color-fg);
+    outline: none;
+  }
+  .input::placeholder {
+    color: var(--color-mute);
+  }
+  .input:focus {
+    border-color: var(--color-fg);
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    border: 1px solid var(--color-fg);
+    background: transparent;
+    padding: 0.5rem 1rem;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--color-fg);
+    cursor: pointer;
+    user-select: none;
+  }
+  .btn:hover:not(:disabled) {
+    background: var(--color-fg);
+    color: var(--color-ink);
+  }
+  .btn:disabled {
+    cursor: not-allowed;
+    opacity: 0.4;
+  }
+
+  /* Inverted emphasis — white block, black text. */
+  .btn-invert {
+    background: var(--color-fg);
+    color: var(--color-ink);
+  }
+  .btn-invert:hover:not(:disabled) {
+    background: transparent;
+    color: var(--color-fg);
+  }
+
+  .btn-ghost {
+    border-color: var(--color-line);
+    color: var(--color-mute);
+  }
+  .btn-ghost:hover:not(:disabled) {
+    background: transparent;
+    border-color: var(--color-fg);
+    color: var(--color-fg);
+  }
+
+  .panel {
+    border: 1px solid var(--color-line);
+    background: var(--color-panel);
+  }
+
+  /* Hard offset shadow — the only permitted "elevation". */
+  .hard-shadow {
+    box-shadow: 8px 8px 0 0 #000000;
+  }
+
+  /* Error/status as inversion, never color. */
+  .error-block {
+    border: 1px solid var(--color-fg);
+    background: var(--color-fg);
+    color: var(--color-ink);
+    padding: 0.5rem 0.75rem;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    word-break: break-word;
+  }
+
+  .notice-block {
+    border: 1px solid var(--color-line-strong);
+    background: var(--color-panel);
+    color: var(--color-fg);
+    padding: 0.5rem 0.75rem;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+}
